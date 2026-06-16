@@ -41,9 +41,15 @@
   <link rel="stylesheet" href="css/layout/sidebar.css" />
 
   <!-- Custom stylesheets — Components -->
-  <link rel="stylesheet" href="css/components/chat.css" />
+  <link rel="stylesheet" href="css/components/chat-layout.css" />
+  <link rel="stylesheet" href="css/components/chat-messages.css" />
+  <link rel="stylesheet" href="css/components/chat-attachments.css" />
+  <link rel="stylesheet" href="css/components/chat-lightbox.css" />
   <link rel="stylesheet" href="css/components/profile.css" />
-  <link rel="stylesheet" href="css/components/email.css" />
+  <link rel="stylesheet" href="css/components/email-layout.css" />
+  <link rel="stylesheet" href="css/components/email-view.css" />
+  <link rel="stylesheet" href="css/components/email-compose.css" />
+  <link rel="stylesheet" href="css/components/auth-overlay.css" />
   <link rel="stylesheet" href="css/components/telegram.css" />
 </head>
 
@@ -925,14 +931,15 @@
 <script src="js/utils/data.js"></script>
 
 <!-- App logic — Features -->
-<script src="js/features/auth.js"></script>
-<script src="js/features/telegram_v2.js"></script>
-<script src="js/features/chat.js"></script>
-<script src="js/features/email.js"></script>
-<script src="js/features/sidebar_v2.js"></script>
-
-<!-- App logic — Entry point -->
-<script src="js/core/main.js"></script>
+  <script src="js/features/auth.js"></script>
+  <script src="js/features/sidebar_v2.js"></script>
+  <script src="js/features/chat-ui.js"></script>
+  <script src="js/features/chat-input.js"></script>
+  <script src="js/features/email-state.js"></script>
+  <script src="js/features/email-ui.js"></script>
+  <script src="js/features/email-compose.js"></script>
+  <script src="js/features/telegram_v2.js"></script>
+  <script src="js/core/main.js"></script>
 
 <!-- Init Lucide icons -->
 <script>

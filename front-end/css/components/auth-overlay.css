@@ -1,0 +1,267 @@
+/* ══════════════════════════════════════════════════════
+   GMAIL / SUPABASE AUTH OVERLAY
+══════════════════════════════════════════════════════ */
+
+/* Full-screen backdrop */
+.auth-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.auth-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Card */
+.auth-card {
+  position: relative;
+  width: 420px;
+  max-width: calc(100vw - 32px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 40px 36px 32px;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.04);
+  overflow: hidden;
+  transform: translateY(20px) scale(0.97);
+  transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.28s ease;
+}
+
+.auth-overlay.open .auth-card {
+  transform: translateY(0) scale(1);
+}
+
+/* Decorative animated blobs */
+.auth-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  pointer-events: none;
+  animation: authBlobFloat 8s ease-in-out infinite alternate;
+}
+
+.auth-blob-1 {
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(234, 67, 53, 0.22) 0%, transparent 70%);
+  top: -60px; right: -60px;
+  animation-delay: 0s;
+}
+
+.auth-blob-2 {
+  width: 160px; height: 160px;
+  background: radial-gradient(circle, rgba(66, 133, 244, 0.18) 0%, transparent 70%);
+  bottom: -40px; left: -40px;
+  animation-delay: -3s;
+}
+
+.auth-blob-3 {
+  width: 120px; height: 120px;
+  background: radial-gradient(circle, rgba(52, 168, 83, 0.15) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: -5s;
+}
+
+@keyframes authBlobFloat {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(10px, -10px) scale(1.08); }
+  100% { transform: translate(-8px, 8px) scale(0.95); }
+}
+
+/* Close button */
+.auth-close {
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-3);
+  transition: background var(--t-fast), color var(--t-fast), transform var(--t-fast);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  z-index: 10;
+}
+.auth-close:hover { background: var(--surface-3); color: var(--text-1); transform: rotate(90deg); }
+.auth-close .lucide { width: 16px; height: 16px; }
+
+/* Logo area */
+.auth-logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.auth-gmail-logo {
+  width: 52px; height: 52px;
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 12px rgba(234, 67, 53, 0.18);
+  flex-shrink: 0;
+}
+
+.auth-logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.auth-logo-nexus {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-1);
+  letter-spacing: -0.03em;
+}
+
+.auth-logo-email {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #ea4335;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Title & subtitle */
+.auth-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-1);
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.auth-subtitle {
+  font-size: 13.5px;
+  color: var(--text-3);
+  line-height: 1.6;
+  margin-bottom: 28px;
+  position: relative;
+}
+
+/* Google Sign-In Button */
+.auth-google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: 14px;
+  border: 1.5px solid var(--border-md, rgba(255,255,255,0.12));
+  background: var(--surface-3);
+  color: var(--text-1);
+  font-size: 15px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background var(--t-fast), border-color var(--t-fast),
+              box-shadow var(--t-fast), transform var(--t-fast);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  margin-bottom: 18px;
+}
+
+.auth-google-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(66,133,244,0.08) 0%, rgba(234,67,53,0.08) 100%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.auth-google-btn:hover {
+  background: var(--surface-4, var(--surface-3));
+  border-color: rgba(66, 133, 244, 0.5);
+  box-shadow: 0 4px 20px rgba(66,133,244,0.25), 0 0 0 3px rgba(66,133,244,0.1);
+  transform: translateY(-1px);
+}
+
+.auth-google-btn:hover::before { opacity: 1; }
+
+.auth-google-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+
+/* Loading state */
+.auth-google-btn.loading {
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.auth-google-btn.loading span::after {
+  content: '…';
+  animation: authDots 1s steps(3, end) infinite;
+}
+
+@keyframes authDots {
+  0%, 20%  { content: '.'; }
+  40%      { content: '..'; }
+  60%,100% { content: '...'; }
+}
+
+/* Privacy note */
+.auth-privacy {
+  font-size: 11px;
+  color: var(--text-3);
+  line-height: 1.6;
+  text-align: center;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+/* Feature list */
+.auth-features {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+}
+
+.auth-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.auth-feature-icon {
+  width: 36px; height: 36px;
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  color: var(--accent);
+}
+.auth-feature-icon .lucide { width: 15px; height: 15px; }
+
+.auth-feature-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 2px;
+}
+
+.auth-feature-desc {
+  font-size: 11.5px;
+  color: var(--text-3);
+}
+
+/* ══════════════════════════════════════════════════════

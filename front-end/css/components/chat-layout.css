@@ -1,0 +1,196 @@
+/* ═══════════════════════════════════════════════════════
+   CHAT.CSS  —  Header, bubbles, input bar, wallpaper
+═══════════════════════════════════════════════════════ */
+
+/* ── Chat Wallpaper Layer ── */
+.chat-wallpaper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+/* When bg image is set — show at full clarity */
+.chat-wallpaper.active {
+  opacity: 1;
+}
+
+/* Make messages container sit above wallpaper */
+.messages-container { position: relative; z-index: 1; }
+.chat-input-bar      { position: relative; z-index: 2; }
+.chat-header         { position: relative; z-index: 5; }
+
+/* ── Chat menu three-dots dropdown ── */
+.chat-menu-wrap {
+  position: relative;
+}
+
+.chat-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 200px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-md);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px);
+  transition: opacity var(--t-fast), transform var(--t-fast);
+}
+
+.chat-dropdown.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.chat-dd-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 16px;
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  color: var(--text-1);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--t-fast), color var(--t-fast);
+}
+
+.chat-dd-item:hover {
+  background: var(--surface-3);
+}
+
+.chat-dd-item.danger { color: #f87171; }
+.chat-dd-item.danger:hover { background: rgba(248, 113, 113, 0.1); }
+
+.chat-dd-item .lucide { width: 15px; height: 15px; flex-shrink: 0; }
+
+
+/* ── Chat Header ── */
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  z-index: 5;
+  box-shadow: var(--shadow-sm);
+}
+
+/* header avatar */
+.chat-hdr-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--r-full);
+  flex-shrink: 0;
+  position: relative;
+}
+
+.chat-hdr-avatar-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--r-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.chat-hdr-online {
+  position: absolute;
+  bottom: 1px;
+  right: 1px;
+  width: 9px;
+  height: 9px;
+  background: var(--online);
+  border-radius: var(--r-full);
+  border: 2px solid var(--surface);
+}
+
+/* header info */
+.chat-hdr-info { flex: 1; min-width: 0; }
+
+.chat-hdr-name {
+  display: inline-block;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text-1);
+  cursor: pointer;
+  position: relative;
+  transition: color var(--t-fast);
+}
+
+/* underline slide-in on hover */
+.chat-hdr-name::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--accent);
+  border-radius: var(--r-full);
+  transition: width var(--t-mid);
+}
+
+.chat-hdr-name:hover { color: var(--accent); }
+.chat-hdr-name:hover::after { width: 100%; }
+
+.chat-hdr-status {
+  font-size: 11px;
+  color: var(--online);
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.chat-hdr-status::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: currentColor;
+  border-radius: var(--r-full);
+  display: inline-block;
+  flex-shrink: 0;
+  box-shadow: 0 0 6px currentColor;
+}
+
+.status-away { color: var(--unread) !important; }
+.status-off   { color: var(--text-3) !important; }
+
+/* header action icons */
+.chat-hdr-actions { display: flex; align-items: center; gap: 4px; }
+
+.hdr-icon-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--r-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-3);
+  transition: background var(--t-fast), color var(--t-fast);
+}
+
+.hdr-icon-btn:hover { background: var(--surface-3); color: var(--text-2); }
+.hdr-icon-btn .lucide { width: 16px; height: 16px; }
+
+/* ── Messages Container ── */
