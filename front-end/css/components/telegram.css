@@ -1,0 +1,756 @@
+/* =========================================================
+   TELEGRAM.CSS  —  Nexus Multi-Chat — Telegram Inline Auth
+   ========================================================= */
+
+/* ── Overlay backdrop ── */
+.tg-auth-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0);
+  backdrop-filter: blur(0px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              backdrop-filter 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tg-auth-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(20px);
+}
+
+/* Floating background particles */
+.tg-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.tg-particle {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(38, 165, 228, 0.3), transparent);
+  animation: tgParticleFloat 8s ease-in-out infinite;
+}
+
+.tg-particle:nth-child(1) { width: 300px; height: 300px; top: -80px; left: -60px; animation-delay: 0s; animation-duration: 12s; }
+.tg-particle:nth-child(2) { width: 200px; height: 200px; top: 60%; right: -40px; animation-delay: -3s; animation-duration: 10s; }
+.tg-particle:nth-child(3) { width: 150px; height: 150px; bottom: -30px; left: 30%; animation-delay: -6s; animation-duration: 14s; }
+.tg-particle:nth-child(4) { width: 100px; height: 100px; top: 20%; right: 20%; animation-delay: -2s; animation-duration: 9s; }
+.tg-particle:nth-child(5) { width: 80px; height: 80px; bottom: 20%; left: 10%; animation-delay: -5s; animation-duration: 11s; }
+
+@keyframes tgParticleFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+  25% { transform: translate(30px, -40px) scale(1.1); opacity: 0.5; }
+  50% { transform: translate(-20px, 20px) scale(0.95); opacity: 0.4; }
+  75% { transform: translate(15px, 35px) scale(1.05); opacity: 0.35; }
+}
+
+/* Main Card */
+.tg-auth-card {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 440px;
+  padding: 24px 32px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--text-1);
+  opacity: 0;
+  transform: translateY(20px) scale(0.96);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tg-auth-overlay.open .tg-auth-card {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Light mode overrides */
+[data-theme="light"] .tg-auth-card {
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(248, 250, 252, 0.98)
+  );
+  border: 1px solid rgba(38, 165, 228, 0.2);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.15),
+              0 0 60px rgba(38, 165, 228, 0.1),
+              inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* ── Close button ── */
+.tg-auth-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+
+.tg-auth-close:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--text-1);
+  transform: rotate(90deg);
+}
+
+.tg-auth-close .lucide {
+  width: 16px;
+  height: 16px;
+}
+
+/* ── Logo section ── */
+.tg-logo-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tg-logo-icon {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #26a5e4, #0088cc, #229ed9);
+  background-size: 200% 200%;
+  animation: tgLogoGradient 4s ease infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 8px 32px rgba(38, 165, 228, 0.35),
+    0 0 0 1px rgba(38, 165, 228, 0.2);
+}
+
+.tg-logo-icon svg {
+  width: 24px;
+  height: 24px;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2));
+}
+
+/* Animated ring around logo */
+.tg-logo-icon::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 16px;
+  border: 2px solid transparent;
+  border-top-color: rgba(38, 165, 228, 0.6);
+  border-right-color: rgba(38, 165, 228, 0.3);
+  animation: tgLogoSpin 3s linear infinite;
+}
+
+@keyframes tgLogoGradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes tgLogoSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.tg-logo-text {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.tg-logo-nexus {
+  color: var(--text-1);
+}
+
+.tg-logo-telegram {
+  background: linear-gradient(135deg, #26a5e4, #0088cc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Heading ── */
+.tg-auth-title {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin: 0 0 6px;
+  letter-spacing: -0.3px;
+}
+
+.tg-auth-subtitle {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-2);
+  margin: 0 0 16px;
+  line-height: 1.4;
+  max-width: 360px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── QR Code section ── */
+.tg-qr-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.tg-qr-container {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  border-radius: 16px;
+  padding: 12px;
+  background: #ffffff;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(38, 165, 228, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.3s ease;
+}
+
+.tg-qr-container:hover {
+  transform: scale(1.03);
+  box-shadow:
+    0 12px 48px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(38, 165, 228, 0.2),
+    0 0 40px rgba(38, 165, 228, 0.1);
+}
+
+/* Animated scanning line */
+.tg-qr-scanner {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(38, 165, 228, 0.8),
+    transparent
+  );
+  border-radius: 2px;
+  animation: tgScanLine 2.5s ease-in-out infinite;
+  z-index: 2;
+  filter: drop-shadow(0 0 8px rgba(38, 165, 228, 0.5));
+}
+
+@keyframes tgScanLine {
+  0% { top: 12px; opacity: 1; }
+  45% { top: calc(100% - 15px); opacity: 1; }
+  50% { top: calc(100% - 15px); opacity: 0; }
+  55% { top: 12px; opacity: 0; }
+  60% { top: 12px; opacity: 1; }
+  100% { top: 12px; opacity: 1; }
+}
+
+/* Corner decorations */
+.tg-qr-corner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  z-index: 1;
+}
+
+.tg-qr-corner::before,
+.tg-qr-corner::after {
+  content: '';
+  position: absolute;
+  background: #26a5e4;
+  border-radius: 2px;
+}
+
+.tg-qr-corner::before {
+  width: 100%;
+  height: 3px;
+}
+
+.tg-qr-corner::after {
+  width: 3px;
+  height: 100%;
+}
+
+.tg-qr-corner.tl { top: 6px; left: 6px; }
+.tg-qr-corner.tl::before { top: 0; left: 0; }
+.tg-qr-corner.tl::after { top: 0; left: 0; }
+
+.tg-qr-corner.tr { top: 6px; right: 6px; }
+.tg-qr-corner.tr::before { top: 0; right: 0; }
+.tg-qr-corner.tr::after { top: 0; right: 0; }
+
+.tg-qr-corner.bl { bottom: 6px; left: 6px; }
+.tg-qr-corner.bl::before { bottom: 0; left: 0; }
+.tg-qr-corner.bl::after { bottom: 0; left: 0; }
+
+.tg-qr-corner.br { bottom: 6px; right: 6px; }
+.tg-qr-corner.br::before { bottom: 0; right: 0; }
+.tg-qr-corner.br::after { bottom: 0; right: 0; }
+
+/* Animated corner pulse */
+.tg-qr-corner::before,
+.tg-qr-corner::after {
+  animation: tgCornerPulse 3s ease-in-out infinite;
+}
+
+.tg-qr-corner.tr::before,
+.tg-qr-corner.tr::after { animation-delay: 0.5s; }
+.tg-qr-corner.bl::before,
+.tg-qr-corner.bl::after { animation-delay: 1s; }
+.tg-qr-corner.br::before,
+.tg-qr-corner.br::after { animation-delay: 1.5s; }
+
+@keyframes tgCornerPulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+/* QR canvas */
+.tg-qr-canvas-wrap {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.tg-qr-canvas-wrap canvas {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+/* Telegram logo overlay on QR center */
+.tg-qr-center-logo {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #26a5e4, #0088cc);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 12px rgba(38, 165, 228, 0.4);
+  z-index: 1;
+  animation: tgCenterPulse 2s ease-in-out infinite;
+}
+
+.tg-qr-center-logo svg {
+  width: 18px;
+  height: 18px;
+}
+
+@keyframes tgCenterPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 2px 12px rgba(38, 165, 228, 0.4); }
+  50% { transform: scale(1.08); box-shadow: 0 4px 20px rgba(38, 165, 228, 0.6); }
+}
+
+/* QR refresh countdown ring */
+.tg-qr-timer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.tg-qr-timer-ring {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.tg-qr-timer-ring svg {
+  width: 24px;
+  height: 24px;
+  transform: rotate(-90deg);
+}
+
+.tg-qr-timer-ring .ring-bg {
+  fill: none;
+  stroke: var(--surface-3);
+  stroke-width: 2.5;
+}
+
+.tg-qr-timer-ring .ring-progress {
+  fill: none;
+  stroke: #26a5e4;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 62.83;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1s linear;
+}
+
+.tg-qr-instructions {
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+
+.tg-qr-instructions strong {
+  color: var(--text-1);
+  font-weight: 600;
+}
+
+/* ── Divider ── */
+.tg-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.tg-divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--border-md),
+    transparent
+  );
+}
+
+.tg-divider-text {
+  font-size: 11.5px;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+}
+
+/* ── Phone number login ── */
+.tg-phone-section {
+  margin-bottom: 12px;
+  width: 100%;
+}
+
+.tg-phone-input-wrap {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.tg-country-select {
+  width: 72px;
+  height: 40px;
+  border-radius: var(--r-md);
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  color: var(--text-1);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--t-fast);
+  outline: none;
+  font-family: inherit;
+}
+
+.tg-country-select:focus {
+  border-color: #26a5e4;
+  box-shadow: 0 0 0 3px rgba(38, 165, 228, 0.15);
+}
+
+.tg-phone-input {
+  flex: 1;
+  height: 40px;
+  border-radius: var(--r-md);
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  color: var(--text-1);
+  font-size: 14px;
+  padding: 0 16px;
+  transition: all var(--t-fast);
+  outline: none;
+  font-family: inherit;
+}
+
+.tg-phone-input::placeholder {
+  color: var(--text-3);
+}
+
+.tg-phone-input:focus {
+  border-color: #26a5e4;
+  box-shadow: 0 0 0 3px rgba(38, 165, 228, 0.15);
+}
+
+.tg-phone-btn {
+  width: 100%;
+  height: 40px;
+  border-radius: var(--r-md);
+  border: none;
+  background: linear-gradient(135deg, #26a5e4, #0088cc);
+  background-size: 200% 200%;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  letter-spacing: 0.3px;
+  position: relative;
+  overflow: hidden;
+}
+
+.tg-phone-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tg-phone-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(38, 165, 228, 0.35);
+  background-position: 100% 50%;
+}
+
+.tg-phone-btn:hover::before {
+  opacity: 1;
+}
+
+.tg-phone-btn:active {
+  transform: translateY(0);
+}
+
+.tg-phone-btn .lucide {
+  width: 16px;
+  height: 16px;
+}
+
+/* Loading state */
+.tg-phone-btn.loading {
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.tg-phone-btn.loading span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tg-phone-btn.loading span::after {
+  content: '';
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: tgSpinner 0.7s linear infinite;
+}
+
+@keyframes tgSpinner {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Features list ── */
+.tg-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.tg-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--r-md);
+  background: rgba(38, 165, 228, 0.04);
+  border: 1px solid rgba(38, 165, 228, 0.08);
+  transition: all 0.3s ease;
+}
+
+.tg-feature-item:hover {
+  background: rgba(38, 165, 228, 0.08);
+  border-color: rgba(38, 165, 228, 0.15);
+  transform: translateY(-1px);
+}
+
+.tg-feature-icon {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: var(--r-sm);
+  background: linear-gradient(135deg, rgba(38, 165, 228, 0.15), rgba(38, 165, 228, 0.05));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #26a5e4;
+}
+
+.tg-feature-icon .lucide {
+  width: 15px;
+  height: 15px;
+}
+
+.tg-feature-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-1);
+  margin-bottom: 2px;
+}
+
+.tg-feature-desc {
+  font-size: 11px;
+  color: var(--text-3);
+  line-height: 1.4;
+}
+
+/* ── Privacy note ── */
+.tg-privacy {
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-3);
+  margin-top: 12px;
+  line-height: 1.4;
+}
+
+/* ── Animated gradient border ── */
+.tg-auth-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 25px;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(38, 165, 228, 0.3),
+    transparent 40%,
+    transparent 60%,
+    rgba(38, 165, 228, 0.15)
+  );
+  background-size: 300% 300%;
+  animation: tgBorderShimmer 6s ease infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+@keyframes tgBorderShimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ── Steps animation on enter ── */
+.tg-auth-overlay.open .tg-logo-wrap {
+  animation: tgFadeUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s both;
+}
+.tg-auth-overlay.open .tg-auth-title {
+  animation: tgFadeUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.22s both;
+}
+.tg-auth-overlay.open .tg-auth-subtitle {
+  animation: tgFadeUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.28s both;
+}
+.tg-auth-overlay.open .tg-qr-section {
+  animation: tgFadeUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.34s both;
+}
+.tg-auth-overlay.open .tg-divider {
+  animation: tgFadeUp 0.5s ease 0.4s both;
+}
+.tg-auth-overlay.open .tg-phone-section {
+  animation: tgFadeUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.46s both;
+}
+.tg-auth-overlay.open .tg-features {
+  animation: tgFadeUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.52s both;
+}
+
+@keyframes tgFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── QR regenerating state ── */
+.tg-qr-container.regenerating .tg-qr-canvas-wrap {
+  opacity: 0.3;
+  filter: blur(4px);
+  transition: all 0.4s ease;
+}
+
+.tg-qr-container.regenerating .tg-qr-center-logo {
+  animation: tgCenterSpin 0.8s linear infinite;
+}
+
+@keyframes tgCenterSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 520px) {
+  .tg-auth-card {
+    padding: 28px 20px 24px;
+    border-radius: 20px;
+  }
+  .tg-features {
+    grid-template-columns: 1fr;
+  }
+  .tg-qr-container {
+    width: 190px;
+    height: 190px;
+  }
+  .tg-qr-canvas-wrap {
+    width: 150px;
+    height: 150px;
+  }
+}

@@ -93,8 +93,14 @@
         } else {
           if (NexusApp.enterEmailMode) NexusApp.enterEmailMode();
         }
+      } else if (btn.dataset.channel === 'tg') {
+        if (NexusApp.openTgAuthOverlay) NexusApp.openTgAuthOverlay();
       } else {
         if (NexusApp.exitEmailMode) NexusApp.exitEmailMode();
+        
+        // Restore chat mode visibility
+        const chatMode = document.getElementById('chatMode');
+        if (chatMode) chatMode.style.display = 'block';
       }
     });
   });
