@@ -30,16 +30,20 @@
   <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
 
   <!-- Custom Smooth Scrolling -->
-  <script src="js/smooth-scroll.js"></script>
+  <script src="js/utils/smooth-scroll.js"></script>
 
-  <!-- Custom stylesheets -->
-  <link rel="stylesheet" href="css/reset.css" />
-  <link rel="stylesheet" href="css/variables.css" />
-  <link rel="stylesheet" href="css/layout.css" />
-  <link rel="stylesheet" href="css/sidebar.css" />
-  <link rel="stylesheet" href="css/chat.css" />
-  <link rel="stylesheet" href="css/profile.css" />
-  <link rel="stylesheet" href="css/email.css" />
+  <!-- Custom stylesheets — Base -->
+  <link rel="stylesheet" href="css/base/reset.css" />
+  <link rel="stylesheet" href="css/base/variables.css" />
+
+  <!-- Custom stylesheets — Layout -->
+  <link rel="stylesheet" href="css/layout/layout.css" />
+  <link rel="stylesheet" href="css/layout/sidebar.css" />
+
+  <!-- Custom stylesheets — Components -->
+  <link rel="stylesheet" href="css/components/chat.css" />
+  <link rel="stylesheet" href="css/components/profile.css" />
+  <link rel="stylesheet" href="css/components/email.css" />
 </head>
 
 <body>
@@ -744,16 +748,84 @@
   </div>
 </div>
 
-<!-- App logic -->
-<script src="js/config.private.js"></script>
-<script src="js/config.js"></script>
-<script src="js/helpers.js"></script>
-<script src="js/data.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/chat.js"></script>
-<script src="js/email.js"></script>
-<script src="js/sidebar.js"></script>
-<script src="js/main.js"></script>
+<!-- ══════════════════════════════════════════════════════
+     COMPOSE EMAIL MODAL
+══════════════════════════════════════════════════════ -->
+<div class="compose-overlay" id="composeOverlay" aria-modal="true" role="dialog" aria-label="Compose new email" aria-hidden="true">
+  <div class="compose-card" id="composeCard">
+
+    <!-- Close button -->
+    <button class="compose-modal-close" id="composeClose" aria-label="Close">
+      <i data-lucide="x" class="lucide"></i>
+    </button>
+
+    <!-- Header -->
+    <div class="compose-modal-header">
+      <div class="compose-modal-icon">
+        <i data-lucide="pencil-line" class="lucide"></i>
+      </div>
+      <h2 class="compose-modal-title">New Message</h2>
+    </div>
+
+    <!-- To field -->
+    <div class="compose-field">
+      <label class="compose-field-label" for="composeTo">To</label>
+      <input type="email" id="composeTo" class="compose-field-input" placeholder="recipient@example.com" autocomplete="email" />
+    </div>
+
+    <!-- Subject field -->
+    <div class="compose-field">
+      <label class="compose-field-label" for="composeSubject">Subject</label>
+      <input type="text" id="composeSubject" class="compose-field-input" placeholder="Email subject" autocomplete="off" />
+    </div>
+
+    <!-- Body textarea -->
+    <textarea id="composeBody" class="compose-body-textarea" placeholder="Write your message…" aria-label="Email body"></textarea>
+
+    <!-- Toolbar -->
+    <div class="compose-toolbar">
+      <div class="compose-format-tools">
+        <button class="fmt-btn" title="Bold" aria-label="Bold"><b>B</b></button>
+        <button class="fmt-btn" title="Italic" aria-label="Italic"><i>I</i></button>
+        <button class="fmt-btn" title="Underline" aria-label="Underline"><u>U</u></button>
+        <button class="fmt-btn" title="Attach file" aria-label="Attach file">
+          <i data-lucide="paperclip" class="lucide"></i>
+        </button>
+        <button class="fmt-btn" title="Insert link" aria-label="Insert link">
+          <i data-lucide="link" class="lucide"></i>
+        </button>
+        <button class="fmt-btn" title="Emoji" aria-label="Emoji">😊</button>
+      </div>
+      <div class="compose-right-actions">
+        <button class="reply-discard-btn" id="composeDiscardBtn" title="Discard draft" aria-label="Discard draft">
+          <i data-lucide="trash-2" class="lucide"></i>
+        </button>
+        <button class="compose-send-btn" id="composeSendBtn" aria-label="Send email">
+          <i data-lucide="send" class="lucide"></i>
+          <span>Send</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- App logic — Core -->
+<script src="js/core/config.private.js"></script>
+<script src="js/core/config.js"></script>
+<script src="js/core/helpers.js"></script>
+
+<!-- App logic — Utils -->
+<script src="js/utils/data.js"></script>
+
+<!-- App logic — Features -->
+<script src="js/features/auth.js"></script>
+<script src="js/features/chat.js"></script>
+<script src="js/features/email.js"></script>
+<script src="js/features/sidebar.js"></script>
+
+<!-- App logic — Entry point -->
+<script src="js/core/main.js"></script>
 
 <!-- Init Lucide icons -->
 <script>
