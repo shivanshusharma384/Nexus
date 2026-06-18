@@ -32,8 +32,17 @@
   justify-content: space-between;
   padding: 0 20px;
   background: linear-gradient(to bottom, rgba(0,0,0,0.75), transparent);
-  z-index: 2;
+  z-index: 10001;
   gap: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+/* Only show topbar when lightbox is open */
+.lb-backdrop.open .lb-topbar {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .lb-filename {
@@ -167,6 +176,15 @@
   gap: 6px;
   padding: 0 20px;
   letter-spacing: 0.02em;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 10001;
+}
+
+/* Only show caption when lightbox is open */
+.lb-backdrop.open .lb-caption {
+  opacity: 1;
 }
 
 /* ── Make img/video wrappers show pointer cursor ── */

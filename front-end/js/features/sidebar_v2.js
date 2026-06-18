@@ -4,20 +4,20 @@
    ========================================================= */
 
 (function () {
-  const app             = document.getElementById('app');
-  const html            = document.documentElement;
-  const themeToggle     = document.getElementById('themeToggle');
-  const chatNameBtn     = document.getElementById('chatNameBtn');
-  const profilePanel    = document.getElementById('profilePanel');
-  const profileClose    = document.getElementById('profileClose');
-  const dmRows          = document.querySelectorAll('.dm-row');
-  const platformBtns    = document.querySelectorAll('.nav-platform-btn');
-  const navUtilBtns     = document.querySelectorAll('.nav-btn');
-  const accHeaders      = document.querySelectorAll('.acc-header');
-  const searchInput     = document.getElementById('searchInput');
+  const app = document.getElementById('app');
+  const html = document.documentElement;
+  const themeToggle = document.getElementById('themeToggle');
+  const chatNameBtn = document.getElementById('chatNameBtn');
+  const profilePanel = document.getElementById('profilePanel');
+  const profileClose = document.getElementById('profileClose');
+  const dmRows = document.querySelectorAll('.dm-row');
+  const platformBtns = document.querySelectorAll('.nav-platform-btn');
+  const navUtilBtns = document.querySelectorAll('.nav-btn');
+  const accHeaders = document.querySelectorAll('.acc-header');
+  const searchInput = document.getElementById('searchInput');
   const searchFilterBtn = document.querySelector('.search-filter');
-  const noChatEl        = document.getElementById('noChatPlaceholder');
-  const chatContent     = document.getElementById('chatContent');
+  const noChatEl = document.getElementById('noChatPlaceholder');
+  const chatContent = document.getElementById('chatContent');
 
   /* ── Theme Toggle ───────────────────────────────────────── */
   const savedTheme = localStorage.getItem('nexus-theme') || 'dark';
@@ -97,10 +97,10 @@
         if (NexusApp.openTgAuthOverlay) NexusApp.openTgAuthOverlay();
       } else {
         if (NexusApp.exitEmailMode) NexusApp.exitEmailMode();
-        
-        // Restore chat mode visibility
+
+        // Remove inline style so CSS controls chatMode visibility
         const chatMode = document.getElementById('chatMode');
-        if (chatMode) chatMode.style.display = 'block';
+        if (chatMode) chatMode.style.display = '';
       }
     });
   });
@@ -158,10 +158,10 @@
     ].join(';');
     searchClearBtn.addEventListener('mouseenter', () => searchClearBtn.style.opacity = '1');
     searchClearBtn.addEventListener('mouseleave', () => searchClearBtn.style.opacity = '0.7');
-    
+
     const searchBar = document.querySelector('.search-bar');
     if (searchBar) searchBar.insertBefore(searchClearBtn, searchFilterBtn);
-    
+
     const noResultsEl = document.createElement('div');
     noResultsEl.id = 'searchNoResults';
     noResultsEl.style.cssText = [
@@ -170,7 +170,7 @@
       'color:var(--text-3)', 'font-size:12.5px', 'text-align:center'
     ].join(';');
     noResultsEl.innerHTML = `<i data-lucide="search-x" class="lucide" style="width:28px;height:28px;opacity:.4;"></i><span>No contacts found</span>`;
-    
+
     const dmList = document.getElementById('dmList');
     if (dmList) dmList.parentNode.insertBefore(noResultsEl, dmList.nextSibling);
 

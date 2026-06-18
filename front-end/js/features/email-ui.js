@@ -18,7 +18,7 @@
 
   NexusApp.renderInbox = async function (tab, append = false) {
     if (NexusApp.isFetchingEmails) return;
-    
+
     NexusApp.activeEmailTab = tab;
     const list = document.getElementById('inboxList');
     if (!list) return;
@@ -204,7 +204,7 @@
           try {
             const h = doc.documentElement.scrollHeight || doc.body.scrollHeight;
             iframe.style.height = Math.max(h, 80) + 'px';
-          } catch(e) { iframe.style.height = '300px'; }
+          } catch (e) { iframe.style.height = '300px'; }
         }
         resizeIframe();
         const imgs = doc.querySelectorAll('img');
